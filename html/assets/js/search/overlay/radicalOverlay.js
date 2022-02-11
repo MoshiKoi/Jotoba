@@ -1,6 +1,7 @@
 /**
  *  Used to handle the radical search
 */
+
 const radicals = [
     ["一", "｜", "丶", "ノ", "乙", "亅"],
     ["二", "亠", "人", "⺅", "𠆢", "儿", "入", "ハ", "丷", "冂", "冖", "冫", "几", "凵", "刀", "⺉", "力", "勹", "匕", "匚", "十", "卜", "卩", "厂", "厶", "又", "マ", "九", "ユ", "乃", "𠂉"],
@@ -19,7 +20,22 @@ const radicals = [
     ["龠"]
 ];
 
-var radicalMask = [
+// Constructor preparing data
+function RadicalOverlay () {
+    Util.awaitDocumentReady(() => {
+        loadRadicals(0);
+    
+        // Used to re-focus searchbar upon using Radical Btns
+        $("#kanji-search").focus(e => {
+            currentSearchInput = $("#kanji-search");
+        });
+        $("#search").focus(e => {
+            currentSearchInput = $("#search");
+        });
+    });
+}
+
+RadicalOverlay.radicalMask = [
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -37,22 +53,13 @@ var radicalMask = [
     [0]
 ];
 
-var baseRadResult;
+
+
+
 var currentSearchInput;
 var lastRadicalSearchResult;
 
-Util.awaitDocumentReady(() => {
-    baseRadResult = $('.rad-results')[0].innerHTML;
-    loadRadicals(0);
 
-    // Used to re-focus searchbar upon using Radical Btns
-    $("#kanji-search").focus(e => {
-        currentSearchInput = $("#kanji-search");
-    });
-    $("#search").focus(e => {
-        currentSearchInput = $("#search");
-    });
-});
 
 // Opens | Closes the Radical overlay
 function toggleRadicalOverlay() {
@@ -68,7 +75,7 @@ function toggleRadicalOverlay() {
         rContainer.classList.add("hidden");
         Suggestions.overlay.show();
     } else {
-        $('.rad-results').html(baseRadResult);
+        $('.rad-results').html("");
         $('.rad-results').removeClass("hidden");
         Suggestions.updateSuggestions();
         scrollSearchIntoView();
@@ -90,7 +97,7 @@ function resetRadPicker() {
         radicalMask[i][j] = 0;
     });
 
-    $('.rad-results').html(baseRadResult);
+    $('.rad-results').html("");
     resetAllTabs();
 
     currentSearchInput.focus();

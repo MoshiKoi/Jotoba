@@ -75,7 +75,7 @@ function scrollSearchIntoView() {
 }
 
 // Closes all overlays connected to the search bar
-function closeAllSubSearchbarOverlays(overlayToIgnore) {
+function closeAllSearchOverlays(overlayToIgnore) {
     if (overlayToIgnore !== "speech")
         $('.overlay.speech').addClass('hidden');
     if (overlayToIgnore !== "radical") 
